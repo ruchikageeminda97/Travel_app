@@ -27,5 +27,4 @@ export default function App() {
 }
 
 
-{/*58.43*/}
-{/*https://www.youtube.com/watch?v=JqPezeQiwxk*/}
+

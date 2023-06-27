@@ -19,7 +19,8 @@ const Homescreen = () => {
   },[])
 
   return (
-      <SafeAreaView className="bg-[#f3fdfa] flex-1 relative">
+  
+  <SafeAreaView className="bg-[#f3fdfa] flex-1 relative">
 
 {/*Top area*/}
 
@@ -35,7 +36,7 @@ const Homescreen = () => {
         <Text className="text-[#3C6072] text-[42px]">Enjoy the trip with</Text>
         <Text className="text-[#e83e3e] text-[30px] font-bold">Good Moents</Text>
 
-        <Text className="text-[#3C6072] text-base">Travel with purpose: Discover new cultures and make a difference.</Text>
+        <Text className="text-[#3C6072] text-base">Travel with purpose Discover new cultures and make a difference.</Text>
       </View>
 
 {/*tHIRD area*/}
