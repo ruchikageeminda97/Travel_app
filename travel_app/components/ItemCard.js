@@ -1,10 +1,16 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
+import ItemScreen from '../screens/ItemScreen';
 
-const ItemCard = ({imageSrc, title, location}) => {
+const ItemCard = ({imageSrc, title, location, data}) => {
+  const navigation= useNavigation()
   return (
-    <TouchableOpacity className="rounded-md border-gray-50 space-y-2 px-3 py-2 shadow-md bg-white w-[182px] my-2">
+    <TouchableOpacity 
+    onPress={()=>navigation.navigate("ItemScreen", {param:data})}
+
+    className="rounded-md border-gray-50 space-y-2 px-3 py-2 shadow-md bg-white w-[182px] my-2">
       <Image 
         source={{uri : imageSrc}}
         className="w-full h-40 rounded-md object-cover"
