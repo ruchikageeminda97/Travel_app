@@ -19,22 +19,33 @@ const Discover = () => {
     const [isLoading, setisLoading] = useState(false)
     const [mainData, setmainData] = useState([])
 
-  useLayoutEffect(()=>{
+   useLayoutEffect(()=>{
     navigation.setOptions({
       headerShown:false,
     })
   },[])
 
+  useEffect (()=> {
+    setisLoading(true);
+    getPlacesData().then(data => {
+        setmainData(data);
+        setInterval(() => {
+            setisLoading(false);
+        }, 2000);
+    })
+  }, []) 
+
+{/*
  useEffect(() => {
     setisLoading(true);
     getPlacesData().then((data) => {
       setmainData(data);
-      setInterval(() => {
+        setInterval(() => {
         setisLoading (false);
       }, 2000);
     });
     },[])
-
+*/}
   return (
     <SafeAreaView className="bg-white flex-1 relative">
        <View className="flex-row items-center justify-between px-8">
@@ -129,19 +140,27 @@ const Discover = () => {
                            
                          {mainData?.length > 0 ? (
                          <>
-                             <ItemCard key={"101"} imageSrc={"https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} 
-                                title="Something Something Something" location="Doha"/>
-                            <ItemCard key={"102"} imageSrc={"https://media.licdn.com/dms/image/C5603AQEf-sQ8OGVelg/profile-displayphoto-shrink_800_800/0/1660498507261?e=1693440000&v=beta&t=IFnQ8ita-iRgvTozZ_uhiQC_bSWqbsmNvr9FATfN06I"} 
-                                title="smple" location="Doha"
+                             <ItemCard 
+                                key={"101"} 
+                                imageSrc={"https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} 
+                                title="Something Something Something" 
+                                location="Doha"/>
+
+                            <ItemCard 
+                                key={"102"} 
+                                imageSrc={"https://media.licdn.com/dms/image/C5603AQEf-sQ8OGVelg/profile-displayphoto-shrink_800_800/0/1660498507261?e=1693440000&v=beta&t=IFnQ8ita-iRgvTozZ_uhiQC_bSWqbsmNvr9FATfN06I"} 
+                                title="smple" 
+                                location="Doha"
                                 
                             /> 
+
                             </>
                              ) : ( 
                                 <>
                                 <View className="w-full h-[400px] items-center space-y-8 justify-center ">
                                     <Image source={NotFound} 
-                                        className="w-32 h-32 object-cover "/>
-                                        <Text className="text-[25px] mb-14">Oops... Not   found</Text>
+                                        className="w-40 h-40 object-cover "/>
+                                        <Text className="text-[25px] mb-14">Oops... Not found</Text>
                                 </View>
                                 </> 
                             )}
