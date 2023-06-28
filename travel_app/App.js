@@ -28,3 +28,9 @@ export default function App() {
 
 
 
+{/*02.14.10*/}
+{/*https://www.youtube.com/watch?v=JqPezeQiwxk*/}
+
+{/*https://console.cloud.google.com/google/maps-apis/home?project=proud-research-391113*/}
+
+{/*https://rapidapi.com/apidojo/api/travel-advisor/*/}

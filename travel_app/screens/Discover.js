@@ -1,20 +1,23 @@
-import { View, Text,Image, ScrollView, TouchableOpacity  } from 'react-native'
-import React, { useLayoutEffect, useState } from 'react'
+import { View, Text,Image, ScrollView, TouchableOpacity, ActivityIndicator  } from 'react-native'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {Attractions, Hotels, Resturents, profile } from '../assets';
+import {Attractions, Hotels, NotFound, Resturents, profile } from '../assets';
 import Menu from '../components/Menu';
 
 import { FontAwesome } from '@expo/vector-icons';
 import ItemCard from '../components/ItemCard';
+import { getPlacesData } from '../api';
 
 const Discover = () => {
 
     const navigation = useNavigation();
 
     const [type, settype] = useState ("restaurants")
+    const [isLoading, setisLoading] = useState(false)
+    const [mainData, setmainData] = useState([])
 
   useLayoutEffect(()=>{
     navigation.setOptions({
@@ -22,6 +25,15 @@ const Discover = () => {
     })
   },[])
 
+ useEffect(() => {
+    setisLoading(true);
+    getPlacesData().then((data) => {
+      setmainData(data);
+      setInterval(() => {
+        setisLoading (false);
+      }, 2000);
+    });
+    },[])
 
   return (
     <SafeAreaView className="bg-white flex-1 relative">
@@ -41,7 +53,7 @@ const Discover = () => {
 
         </View>
 
-        <View className="flex-row items-center bg-[#f9f6ff] mx-4 rounded-xl py-1 px-4 mt-4 shadow-lg">
+        <View className="flex-row items-center bg-[#f9f7fd] mx-4 rounded-lg py-2 px-2 mt-3 shadow-lg">
         <GooglePlacesAutocomplete
             GooglePlacesDetailsQuery={{fields : "geometry"}}
             placeholder='Find here'
@@ -60,64 +72,92 @@ const Discover = () => {
         </View>
 
         {/* menu */}
-            
+
+           {isLoading ? <View className="flex-1 items-center justify-center">
+                <ActivityIndicator size="large" color="#0B646B" /> 
+           </View> :
+           
             <ScrollView>
 
-                <View className=" flex-row items-center justify-between px-8 mt-8">
-                    
-                    <Menu
-                        key={"hotel"}
-                        title="Hotel"
-                        imageSrc={Hotels}
-                        type={type}
-                        settype={settype}
-                    />
+                    <View className=" flex-row items-center justify-between px-8 mt-8">
+                        
+                        <Menu
+                            key={"hotel"}
+                            title="Hotel"
+                            imageSrc={Hotels}
+                            type={type}
+                            settype={settype}
+                        />
 
-                  
-                    <Menu
-                        key={"attractions"}
-                        title="Attractions"
-                        imageSrc={Attractions}
-                        type={type}
-                        setType={settype}
-                    />
+                        <Menu
+                            key={"attractions"}
+                            title="Attractions"
+                            imageSrc={Attractions}
+                            type={type}
+                            setType={settype}
+                        />
 
-                    <Menu
-                        key={"restaurants"}
-                        title="Restaurants"
-                        imageSrc={Resturents}
-                        type={type}
-                        setType={settype}
-                    />
+                        <Menu
+                            key={"restaurants"}
+                            title="Restaurants"
+                            imageSrc={Resturents}
+                            type={type}
+                            setType={settype}
+                        />
 
-                </View>
+                    </View>
 
-                <View>
-                    <View className="flex-row items-center justify-between px-8 mt-8">
-                        <Text className="text-[#266369] font-bold text-[30px]">
-                            Top Tips
-                        </Text>
-
-                        <TouchableOpacity className="flex-row items-center justify-center space-x-1.5">
-                            <Text className="text-[#2C7379] font-bold text-[24px]">
-                                Explore
+                    <View>
+                        <View className="flex-row items-center justify-between px-8 mt-8">
+                            <Text className="text-[#266369] font-bold text-[30px]">
+                                Top Tips
                             </Text>
 
-                            <FontAwesome name="long-arrow-right" size={24} color="#A0C4C7" />
+                            <TouchableOpacity className="flex-row items-center justify-center space-x-1.5">
+                                <Text className="text-[#2C7379] font-bold text-[24px]">
+                                    Explore
+                                </Text>
 
-                        </TouchableOpacity>
+                                <FontAwesome name="long-arrow-right" size={24} color="#A0C4C7" />
+
+                            </TouchableOpacity>
+                        </View>
+                    
+
+
+                        <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
+                           
+                         {mainData?.length > 0 ? (
+                         <>
+                             <ItemCard key={"101"} imageSrc={"https://images.pexels.com/photos/1024960/pexels-photo-1024960.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"} 
+                                title="Something Something Something" location="Doha"/>
+                            <ItemCard key={"102"} imageSrc={"https://media.licdn.com/dms/image/C5603AQEf-sQ8OGVelg/profile-displayphoto-shrink_800_800/0/1660498507261?e=1693440000&v=beta&t=IFnQ8ita-iRgvTozZ_uhiQC_bSWqbsmNvr9FATfN06I"} 
+                                title="smple" location="Doha"
+                                
+                            /> 
+                            </>
+                             ) : ( 
+                                <>
+                                <View className="w-full h-[400px] items-center space-y-8 justify-center ">
+                                    <Image source={NotFound} 
+                                        className="w-32 h-32 object-cover "/>
+                                        <Text className="text-[25px] mb-14">Oops... Not   found</Text>
+                                </View>
+                                </> 
+                            )}
+                         
+                         
+                         
+                           
+
+                        </View>
+
                     </View>
-                
-
-
-                    <View className="px-4 mt-8 flex-row items-center justify-evenly flex-wrap">
-                        <ItemCard key={"101"} imageSrc={""} title="" location=""/>
-                        <ItemCard key={"102"} imageSrc={""} title="" location=""/>
-                    </View>
-
-                </View>
 
             </ScrollView>
+           
+           } 
+
             
             
 
