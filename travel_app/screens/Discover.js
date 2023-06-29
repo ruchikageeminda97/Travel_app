@@ -19,6 +19,12 @@ const Discover = () => {
     const [isLoading, setisLoading] = useState(false)
     const [mainData, setmainData] = useState([])
 
+    const [bl_lat, setBl_lat] = useState(null)
+    const [bl_lng, setBl_lng] = useState(null)
+    const [tr_lat, setTr_lat] = useState(null)
+    const [tr_lng, setTr_lng] = useState(null)
+
+
    useLayoutEffect(()=>{
     navigation.setOptions({
       headerShown:false,
@@ -27,25 +33,14 @@ const Discover = () => {
 
   useEffect (()=> {
     setisLoading(true);
-    getPlacesData().then(data => {
+    getPlacesData(bl_lat, bl_lng, tr_lat, tr_lng, type).then(data => {
         setmainData(data);
         setInterval(() => {
             setisLoading(false);
         }, 2000);
     })
-  }, []) 
+  }, [bl_lat, bl_lng, tr_lat, tr_lng, type]) 
 
-{/*
- useEffect(() => {
-    setisLoading(true);
-    getPlacesData().then((data) => {
-      setmainData(data);
-        setInterval(() => {
-        setisLoading (false);
-      }, 2000);
-    });
-    },[])
-*/}
   return (
     <SafeAreaView className="bg-white flex-1 relative">
        <View className="flex-row items-center justify-between px-8">
@@ -72,6 +67,13 @@ const Discover = () => {
             onPress={(data, details = null) => {
                 // 'details' is provided when fetchDetails = true
                 console.log(details?.geometry?.viewport);
+
+                setBl_lat(details?.geometry?.viewport?.southwest?.lat)
+                setBl_lng(details?.geometry?.viewport?.southwest?.lng)
+                setTr_lat(details?.geometry?.viewport?.northeast?.lat)
+                setTr_lng(details?.geometry?.viewport?.northeast?.lng)
+
+
             }}
             query={{
                 key: "AIzaSyAfr-6auzWRumLUd4EXleZNY-Cj5--BI4w",
@@ -93,7 +95,7 @@ const Discover = () => {
                     <View className=" flex-row items-center justify-between px-8 mt-8">
                         
                         <Menu
-                            key={"hotel"}
+                            key={"hotels"}
                             title="Hotel"
                             imageSrc={Hotels}
                             type={type}

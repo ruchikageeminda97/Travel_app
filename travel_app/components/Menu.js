@@ -4,7 +4,7 @@ import React from 'react'
 const Menu = ({title, imageSrc,type}) => {
   
     const handlePress = () => {
-        setType (title.toLowerCase())
+        settype (title.toLowerCase())
     }
  
  
